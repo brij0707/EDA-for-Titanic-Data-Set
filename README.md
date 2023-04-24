@@ -11,4 +11,5 @@ We will do the basic EDA on Titanic Dataset
 
 - The reason behind **sinking** of this beast was because of **striking** to an **iceberg** while travelling from **Southampton** to **New York City**.
 - The popular event has **inspired** numerous **works of art**, the most prominient being the 1997 movie - Titanic. Don't tell me that you have not watched it yet.
-![image]()
+
+![image](https://raw.githubusercontent.com/brij0707/EDA-for-Titanic-Data-Set/main/images/RMS_Titanic_3.jpg)
