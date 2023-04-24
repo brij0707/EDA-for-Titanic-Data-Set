@@ -86,3 +86,10 @@ warnings.filterwarnings("ignore")                                   # Warnings w
 |11| **Cabin**         | Cabin number                                          |
 |12| **Embarked**     | Port of Embarkation                                   |
 
+```python
+# Loading the data set
+data = pd.read_csv(filepath_or_buffer='https://github.com/brij0707/EDA-for-Titanic-Data-Set/blob/df8618af38917ee4753fe711ef3a310d851bca52/titanic%20dataset.csv')
+print('Shape of the data set:', data.shape)
+data.head() 				# This is going to show top 5 Rows fromt he data frame
+```
+
