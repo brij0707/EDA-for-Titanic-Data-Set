@@ -24,6 +24,11 @@ We will do the basic EDA on Titanic Dataset
 - Unfortunately, there **weren’t enough lifeboats** for everyone onboard, causing a **disproportionate** number of **deaths**.
 
 - While there was some element of **luck** involved in surviving, it seems some **groups of people** were more likely to **survive** than others.
+- So, the primary objectives are to:
+
+  -	Do a statistical analysis of **how** some group of **people** were **survived** more than others.
+
+  - Perform an Exploratory Data Analysis of titanic dataset with **visualizations** and **storytelling**.
 
 ![image](https://raw.githubusercontent.com/brij0707/EDA-for-Titanic-Data-Set/main/images/Titanic_lifeboat.jpg)
 
