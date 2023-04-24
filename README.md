@@ -25,20 +25,25 @@ We will do the basic EDA on Titanic Dataset
 
 - While there was some element of **luck** involved in surviving, it seems some **groups of people** were more likely to **survive** than others.
 
+![image](https://raw.githubusercontent.com/brij0707/EDA-for-Titanic-Data-Set/main/images/Titanic_lifeboat.jpg)
 
-**3.** [**Installing & Importing Libraries**](#Section3)<br>
-  - **3.1** [**Installing Libraries**](#Section31)
-  - **3.2** [**Upgrading Libraries**](#Section32)
-  - **3.3** [**Importing Libraries**](#Section33)
+**3. Installing & Importing Libraries**
+  - **3.1 Installing Libraries**
+  - **3.2 Upgrading Libraries**
+  - **3.3 Importing Libraries**
 
-**4.** [**Data Acquisition & Description**](#Section4)<br>
-  - **4.1** [**Data Description**](#Section41)
-  - **4.2** [**Data Information**](#Section42)
+**4. Data Acquisition & Description**
+  - **4.1 Data Description**
+  - **4.2 Data Information**
+  
+**5. Data Pre-Profiling**
 
-**5.** [**Data Pre-Profiling**](#Section5)<br>
-**6.** [**Data Cleaning**](#Section6)<br>
-**7.** [**Data Post-Profiling**](#Section7)<br>
-**8.** [**Exploratory Data Analysis**](#Section8)<br>
-**9.** [**Summarization**](#Section9)<br>
-  - **9.1** [**Conclusion**](#Section91)<br>
+**6. Data Cleaning**
+
+**7. Data Post-Profiling**
+
+**8. Exploratory Data Analysis**
+
+**9. Summarization**
+  - **9.1 Conclusion**
   
