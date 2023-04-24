@@ -25,3 +25,20 @@ We will do the basic EDA on Titanic Dataset
 
 - While there was some element of **luck** involved in surviving, it seems some **groups of people** were more likely to **survive** than others.
 
+
+**3.** [**Installing & Importing Libraries**](#Section3)<br>
+  - **3.1** [**Installing Libraries**](#Section31)
+  - **3.2** [**Upgrading Libraries**](#Section32)
+  - **3.3** [**Importing Libraries**](#Section33)
+
+**4.** [**Data Acquisition & Description**](#Section4)<br>
+  - **4.1** [**Data Description**](#Section41)
+  - **4.2** [**Data Information**](#Section42)
+
+**5.** [**Data Pre-Profiling**](#Section5)<br>
+**6.** [**Data Cleaning**](#Section6)<br>
+**7.** [**Data Post-Profiling**](#Section7)<br>
+**8.** [**Exploratory Data Analysis**](#Section8)<br>
+**9.** [**Summarization**](#Section9)<br>
+  - **9.1** [**Conclusion**](#Section91)<br>
+  
