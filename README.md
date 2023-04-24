@@ -32,23 +32,57 @@ We will do the basic EDA on Titanic Dataset
 
 ![image](https://raw.githubusercontent.com/brij0707/EDA-for-Titanic-Data-Set/main/images/Titanic_lifeboat.jpg)
 
-**3. Installing & Importing Libraries**
-  - **3.1 Installing Libraries**
-  - **3.2 Upgrading Libraries**
-  - **3.3 Importing Libraries**
+---
+<a name = Section3></a>
+# **3. Installing and Importing Libraries**
+---
+```python
+!pip install -q datascience          # A package that is required by pandas-profiling library
+!pip install -q pandas-profiling
 
-**4. Data Acquisition & Description**
-  - **4.1 Data Description**
-  - **4.2 Data Information**
-  
-**5. Data Pre-Profiling**
+#-------------------------------------------------------------------------------------------------------------------------------
+import pandas as pd                                                 # Importing for panel data analysis
+from pandas_profiling import ProfileReport                          # Importing Pandas Profiling (To generate Univariate Analysis) 
+pd.set_option('display.max_columns', None)                          # Unfolding hidden features if the cardinality is high      
+pd.set_option('display.max_colwidth', None)                         # Unfolding the max feature width for better clearity      
+pd.set_option('display.max_rows', None)                             # Unfolding hidden data points if the cardinality is high
+pd.set_option('mode.chained_assignment', None)                      # Removing restriction over chained assignments operations
+pd.set_option('display.float_format', lambda x: '%.5f' % x)         # To suppress scientific notation over exponential values
+#-------------------------------------------------------------------------------------------------------------------------------
+import numpy as np                                                  # Importing package numpys (For Numerical Python)
+#-------------------------------------------------------------------------------------------------------------------------------
+import matplotlib.pyplot as plt                                     # Importing pyplot interface of matplotlib                                             
+import seaborn as sns                                               # Importing seaborn library for interactive visualization
+%matplotlib inline
+#-------------------------------------------------------------------------------------------------------------------------------
+import warnings                                                     # Importing warning to disable runtime warnings
+warnings.filterwarnings("ignore")                                   # Warnings will appear only once
+```
 
-**6. Data Cleaning**
+---
+<a name = Section4></a>
+# **4. Data Acquisition & Description**
+---
 
-**7. Data Post-Profiling**
 
-**8. Exploratory Data Analysis**
+- The dataset consists of the information about people boarding the famous RMS Titanic.
 
-**9. Summarization**
-  - **9.1 Conclusion**
-  
+| Records | Features | Dataset Size |
+| :-- | :-- | :-- |
+| 891 | 12 | 58.9 KB | 
+
+| ID | Feature Name | Description of the feature |
+| :-- | :--| :--| 
+|01| **PassengerId**   | Identity of the passenger                                    |
+|02| **Survived**      | Whether the passenger survived or not                 |
+|03| **Pclass**        | Class of the ticket holder                            |
+|04| **Name**          | Name of the passenger                                 |
+|05| **Sex**           | Sex of the passenger                                  |
+|06| **Age**           | Age of the passenger                                  |
+|07| **SibSp**     | Siblings and/or spouse travelling with passenger |
+|08| **Parch**     | Parents and/or children travelling with passenger|
+|09| **Ticket**        | Ticket number                                         |
+|10| **Fare**          | Price of the ticket                                   |
+|11| **Cabin**         | Cabin number                                          |
+|12| **Embarked**     | Port of Embarkation                                   |
+
