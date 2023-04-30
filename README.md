@@ -618,7 +618,7 @@ plt.show()
 - Almost **all women in Pclass 1 and Pclass 2 survived** and nearly **all men in Pclass 2 and Pclass 3 died**.
 
 
-<a name = Section91></a>
+<a name = Section9></a>
 ### **9 Conclusion**
 
 - We have seen the **impact** of various factors such as **Gender**, **Age**, **Port of Embarkment**, **FamilySize** on the **rate of survival**.
