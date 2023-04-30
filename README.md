@@ -1,6 +1,25 @@
 # EDA-for-Titanic-Data-Set
 We will do the basic EDA on Titanic Dataset
 ---
+
+---
+# **Table of Contents**
+---
+
+**1.** [**Introduction**](#Section1)<br>
+**2.** [**Problem Statement**](#Section2)<br>
+**3.** [**Installing & Importing Libraries**](#Section3)<br>
+  
+**4.** [**Data Acquisition & Description**](#Section4)<br>
+  - **4.1** [**Data Description**](#Section41)
+  - **4.2** [**Data Information**](#Section42)
+
+**5.** [**Data Pre-Profiling**](#Section5)<br>
+**6.** [**Data Cleaning**](#Section6)<br>
+**7.** [**Data Post-Profiling**](#Section7)<br>
+**8.** [**Exploratory Data Analysis**](#Section8)<br>
+**9.** [**Conclusion**](#Section9)<br>
+ 
 <a name = Section1></a>
 # **1. Introduction to Dataset**
 ---
@@ -535,3 +554,85 @@ plt.show()
 
 ```
 ![image](https://raw.githubusercontent.com/brij0707/EDA-for-Titanic-Data-Set/main/images/Count%20VS%20Embarked.jpg)
+
+## **Question**: How does Age play an important role for the survival of a passenger?.
+
+```python
+# Instantiate a figure of size of 20 x 7 inches with 
+# 2 subplots with 2:1 width ratio
+fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(20, 7), gridspec_kw={'width_ratios': [2, 1]})
+
+# Creating a kdeplot of Age against survived in subplot 1
+sns.kdeplot(x='Age', shade=True, hue='Survived', data=data, ax=ax[0])
+
+# Adding some cosmetics - ticks, labels, title, legend and grid to the kdeplot.
+ax[0].set_title(label='Distribution of Age feature against Survival', size=16)
+ax[0].set_ylabel(ylabel='Survived', size=14)
+ax[0].set_xlabel(xlabel='Age', size=14)
+ax[0].set_xticklabels(labels=np.arange(-20,100,20), fontsize=12)
+ax[0].set_yticklabels(labels=np.arange(0, 0.035, 0.005), fontsize=12)
+ax[0].legend(labels=['Survived', "Didn't Survive"])
+#ax[0].grid(b=True)
+
+# Creating a boxplot of Age against survived in subplot 2
+sns.boxplot(y='Age', x='Survived', data=data, palette='muted', ax=ax[1])
+
+# Adding some cosmetics - ticks, labels, title, and grid to the boxplot.
+ax[1].set_title(label='Boxplot of Age feature against Survival', size=16)
+ax[1].set_ylabel(ylabel='Age', size=14)
+ax[1].set_xlabel(xlabel='Survived', size=14)
+ax[1].set_xticklabels(labels=["Didn't Survive", "Survived"], fontsize=12)
+ax[1].set_yticklabels(labels=np.arange(-10, 100, 10), fontsize=12)
+#ax[1].grid(b=True)
+
+# Setting a super title for the Age concerning survival plots
+plt.suptitle(t='Influence of Age on Survival', size=18, y=1.0)
+
+# Display the figures
+plt.show()
+```
+![image](https://raw.githubusercontent.com/brij0707/EDA-for-Titanic-Data-Set/main/images/Age%20vs%20survival%20.jpg)
+
+### **Observations**:
+
+- From the left graph, we can see that a lot of **senior citizens** (Age>60) died in the **accident**.
+
+- From both the graphs, we observe that the loss of children with **Age less than 10** is not in significant amount.
+
+- From the right graph, we see that the **eldest** and the **youngest** person on the journey **survived** the shipwreck.
+
+- From both the graphs, we observe that **majority** of **victims** were from the **20-40 years** age group.
+#### More analysis can done as per your requirement
+
+### **Observation On Hypothesis**
+- On studying the previous questions, we observe that an **overwhelming** percentage of **women** & **children** have **survived** the titanic disaster.
+
+- This reminds us of the infamous line from the Titanic movie - ***Women and Children first.***
+
+- But we should also take note that there were a **significant amount** of **men** present during the voyage.
+
+- **76%** of **females** **survived** whereas only **16%** of males **survived**.
+
+- Also the **survival** rate for a **male** is **very low** **irrespective** of the **class**.
+
+- Almost **all women in Pclass 1 and Pclass 2 survived** and nearly **all men in Pclass 2 and Pclass 3 died**.
+
+
+<a name = Section91></a>
+### **9 Conclusion**
+
+- We have seen the **impact** of various factors such as **Gender**, **Age**, **Port of Embarkment**, **FamilySize** on the **rate of survival**.
+
+- **Women** have a **higher** chances of **survival** than men.
+
+- Passengers from **20-40 years** of age had a **very low survival** rate.
+
+- But since a lot of **Age** data was **missing**, we **can't conclude** how much impact Age really had on survival.
+
+- The **class** of the **passenger** seems to have played an **important** role in the rescue operation.
+
+- Passengers who were from the **1st class** were given **more priority** during the **rescue** than **rest** of the **passengers**.
+
+- Passengers who boarded from the **Cherbourg** port had a **higher survival** rate in contrast to the other two ports.
+
+- A lot of **3rd class passengers** from the **Southampton** port **died** in the accident.
