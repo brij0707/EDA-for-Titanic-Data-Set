@@ -154,7 +154,7 @@ data.info()		# to get the layout of table; complete structure of table
 <a name = Section5></a>
 # **5. Data Pre-Profiling**
 ---
-
+### Pandas Profiling
 - For **quick analysis** pandas profiling is very handy.
 
 - It generates profile reports from a pandas DataFrame.
@@ -164,12 +164,374 @@ data.info()		# to get the layout of table; complete structure of table
 - We can use Pandas Profiling or Sweetviz for this Profiling
 
 ```python
-# profile = ProfileReport(df=data)
-# profile.to_file(output_file='Pre Profiling Report.html')
-# print('Accomplished!')
+
+profile = ProfileReport(df=data)
+profile.to_file(output_file='Pre Profiling Report.html')    # Saving the report
+print('Accomplished!')                                  
 ```
+![image](https://raw.githubusercontent.com/brij0707/EDA-for-Titanic-Data-Set/main/images/Pandas%20Profiling%20Report%20Overview.jpg)
+Here you can see the overview of the data loaded. At the top in yellow collow highlighted texts are the various other tabs. Benefit of these is that you can understabd the data that you are using in one go. This report is best way to start working on your data. This is a next step deep dive to understand what could have been missed while you tried to udnerstand the data in first place.
+
+![image](https://raw.githubusercontent.com/brij0707/EDA-for-Titanic-Data-Set/main/images/Pandas%20Profiling%20Report%20Alert.jpg)
+Here you see alerts that can basically trigger the crucial findings from dataset that could possibly play a vital role in analysis and you have to take care of some to get a better result. For Example , High Cardinality refers to Numbers, Missing refers to data that is missing in the data set. Although other tabs are also there where you can look for missing values in each column.
+
 **OR**
 
-'''
+### SweetViz Profiling
+This is similar to Pandas but a bit faster than it.
+```python
+!pip install sweetviz													# installing Sweetviz
+import sweetviz as sv
+sweet_report = sv.analyze(data)									# Analysing the dataframe
+sweet_report.show_html('sweetviz_report.html')	  # saving Report
+```
+This is a complete view of data at one place something very similar to Pandas report.
+![image](https://raw.githubusercontent.com/brij0707/EDA-for-Titanic-Data-Set/main/images/Sweetviz%20report.png)
 
-'''
+### **Observations From Pandas Profiling:**
+
+- There are **891** observations with **12** features. Most of the features have **categorical** data.
+
+- Only **342** passengers out of **891** survived the accident.
+
+- **Name**, **Ticket**, and **Cabin** features have high cardinality and are uniformly distributed.
+
+- **PassengerId** is uniformly distributed
+
+- A lot of **zeros** are present in **Fare**, **Sibsp** and **Parch** features.
+
+- There are **no duplicate** rows in the dataset.
+
+- We can observe that **8.1%** of data in cells is **missing**.
+
+- **Fare** feature is highly skewed towards right.
+
+- **Age** feature is faily symmetrical.
+
+- We can observe that the **Age** feature **missing values** and **Cabin** feature has **missing values**.
+
+- **Embarked** feature has just **2 missing values**.
+
+- For detailed information, check the **Report file uploaded**.
+
+- We will perform **cleaning** operations on our data based on the observations made from the profiling report.
+
+---
+<a name = Section6></a>
+# **6. Data Cleaning**
+---
+|Feature|Data Type|Missing Proportion|Solution|
+|:--:|:--:|:--:|:--|
+|Age|float64|19.9%|Replace with median.|
+|Embarked|object|0.2%|Replace with mode.|
+|Cabin|object|77.1%|Drop the feature.|
+
+```python
+# Filling the missing values of Embarked feature with the mode of the feature.
+data['Embarked'] = data['Embarked'].fillna(value=data['Embarked'].mode()[0])
+
+# Filling the missing values of Age feature with the median age.
+data['Age'].fillna(value=data['Age'].median(), inplace=True)
+
+# Dropping the Cabin feature
+data.drop(labels='Cabin', axis=1, inplace=True)
+
+data.head()
+```
+
+---
+<a name = Section7></a>
+# **7. Data Post-Profiling**
+---
+
+- Now that we have cleansed the data, the dataset does not contain missing values.
+
+- So, the profiling report which we have generated after preprocessing will give us more beneficial insights.
+
+```python
+sweet_report = sv.analyze(data)									# Analysing the dataframe
+sweet_report.show_html('sweetviz_report_post_Profiling.html')	  # saving Report
+```
+
+### **Observations:**
+
+- You can compare the two reports, i.e **Pre Profiling Report.html** and **Post Profiling Report.html**.
+
+- Observations in Post Profiling Report.html:
+
+  - In the Dataset info, **Total Missing** = **0.0%**
+
+  - Number of **features** = **11**
+
+  - You can see the difference in the **Age** feature in both the reports.
+
+  - A lot of zeros are present in **Sibsp** and **Parch** features. They won't be removed as they are necessary.
+
+  - We can observe that **Pclass** and **Fare** are highly **correlated** to each other **inversely**.
+
+  - A lot of **inverse correlations** are observed among the features.
+
+  - For detailed information, check the **Post Profiling Report.html** file.
+
+- We can now begin the Exploratory Data Analysis.
+
+---
+<a name = Section8></a>
+# **8. Exploratory Data Analysis**
+---
+**NOTE**:  
+
+- Before diving further, we will **create** some **new features** that will be useful for analyzing the data.
+
+- These features will be **FamilySize** and **Title**.
+
+- The **FamilySize** will describe the frequency of family members.
+
+- The **Title** will describe salutation of the passenger.
+
+```python
+# Creating a new feature FamilySize from Sibsp and Parch
+data['FamilySize'] = data['SibSp'] + data['Parch'] + 1
+
+# Creating Title feature from Name
+data['Title'] = data['Name'].str.extract(pat=' ([A-Za-z]+)\.', expand=False) # logic here is we are looking for the Alphabet characters followed by **.** 'full stop'
+
+data.head()
+```
+
+```python
+# CHecking how many Types of unique title do we have here
+data.Title.nunique()
+```
+
+The crosstab() function is used to compute a simple cross tabulation of two (or more) factors. By default computes a frequency table of the factors unless an array of values and an aggregation function are passed.
+
+```python
+# Creating a crosstab between Sex and Title
+pd.crosstab(index=data['Sex'], columns=data['Title'])
+```
+
+- There are **a lot of titles** for passengers. We will **simplify** these into selected categories.
+
+- We will arrange the Males and Females into Mr, Mrs, Master, and Miss and put the **neutral** titles as **Other**
+
+```python
+# Rearranging titles into common titles
+data['Title'].replace(to_replace=['Mlle', 'Mme', 'Ms', 'Dr', 'Major', 'Lady', 'Countess', 'Jonkheer', 'Col', 'Rev', 'Capt', 'Sir', 'Don'],
+                      value=['Miss', 'Miss', 'Miss', 'Other', 'Mr', 'Mrs', 'Mrs', 'Other', 'Other', 'Other', 'Mr', 'Mr', 'Mr'],
+                      inplace=True)
+```
+
+```python
+# Now Checking it again
+# Creating a crosstab between Sex and Title again
+pd.crosstab(index=data['Sex'], columns=data['Title'])
+```
+![image](https://raw.githubusercontent.com/brij0707/EDA-for-Titanic-Data-Set/main/images/Cross%20tab.jpg)
+
+- We can see that **gender** and **titles** **match** with each other (**Mr** and **Master** for **males**, **Miss** and **Mrs** for **females**)
+
+- We can use this feature to check if a **title** of a person played an important role in their **survival**.
+
+## **Question**: What is the relationship between age and the title of the passengers?
+
+We will use standard definitions for titles according to Google and Wikipedia:
+
+- **Mr** denotes an **adult man** (Age>18) (regardless of marital status)
+
+- **Mrs** denotes an **adult woman** (Age>18) who is **married**.
+
+- **Master** is an English honorific for **boys** and **young** men.
+
+- **Miss** is an English language honorific used only for an **unmarried** **woman**.
+
+- We will now **visualize** and **compare** the various titles based on this **standard**.
+
+```python
+# Plot a catplot for Age comparing the title of passengers
+sns.catplot(x="Age", y="Title", data=data, size=7, aspect=3)
+
+# Doing Beautification
+plt.xticks(size=12)
+plt.yticks(size=12)
+plt.xlabel(xlabel='Age', size=14)
+plt.ylabel(ylabel='Title', size=14)
+plt.title(label='Age concerning Title of Passengers', size=16)
+# plt.grid(b=True)
+
+# Display the plot
+plt.show()
+```
+![image](https://raw.githubusercontent.com/brij0707/EDA-for-Titanic-Data-Set/main/images/Title%20VS%20Age.jpg)
+
+### **Observations**:
+
+- **Titles** of passengers **don't match** the standard considered by us.
+
+- This is because there are some **Masters** with **age** around **25 years** and **Misters** as young as **10 years** old.
+
+- **Mrs** can be debated based on the **age** of the female gender.
+
+- Some **males** and **females** (**Age<18**) can have marital status as **married** that explains their title as Mr and Mrs but such **data** is **not available** to us.
+
+## **Question**: Does the title play an important role in the survival of the passengers?
+
+```python
+# Instantiate a figure of size of 15 x 7 inches
+fig = plt.figure(figsize=[15, 7])
+
+# Creating countplot of title vs survive
+ax = sns.countplot(y='Title', hue='Survived', data=data, palette='hls')
+
+# Adding percentages to the bars
+total = data.shape[0]
+for p in ax.patches:
+    percentage = '{:.2f}%'.format(100 * p.get_width() / total)
+    x = p.get_x() + p.get_width()
+    y = p.get_y() + p.get_height() / 2
+    ax.annotate(percentage, (x, y))
+
+# Adding some cosmetics
+plt.yticks(size=12)
+plt.xticks(size=12)
+plt.xlabel(xlabel="Count", size=14)
+plt.ylabel(ylabel='Title', size=14)
+plt.title(label="Count plot for Title concerning with survival", size=16)
+plt.legend(labels=["Didn't Survive", "Survive"])
+
+
+# Display the figure
+plt.show()
+```
+
+![image](https://raw.githubusercontent.com/brij0707/EDA-for-Titanic-Data-Set/main/images/Title%20VS%20Count%20of%20servived.jpg)
+
+### **Observations**:
+
+- **Mrs** and **Miss** have particularly **higher** **survival** rate as compared to the rest of the titles.
+
+- We can see that the passengers with the title "**Mr**" **died** the **most**.
+
+- There are rarely any passengers with the **Other** title. We can't conclude if they were given more priority during the rescue.
+
+
+## **Question**: Which gender category is more likely to survive, Male or Female?
+
+```python
+# Instantiate a figure of size of 15 x 7 inches
+fig = plt.figure(figsize=(7, 7))
+
+# Creating countplot of Sex vs Survived
+ax = sns.countplot(x='Sex', hue='Survived', data=data, palette='Dark2')
+
+# Adding percentages to the bars
+total = data.shape[0]
+for p in ax.patches:
+    percentage = '{:.2f}%'.format(100 * p.get_height() / total)
+    x = p.get_x() + p.get_width()/5
+    y = p.get_y() + p.get_height()
+    ax.annotate(percentage, (x, y))
+    
+# Adding some cosmetics - ticks, labels, title, legend and grid.
+plt.xticks(ticks=[0, 1], labels=["Male", "Female"], fontsize=12)
+plt.yticks(fontsize=12)
+plt.xlabel(xlabel="Sex", size=14)
+plt.ylabel(ylabel='Count', size=14)
+plt.title(label='Comparison of male and female survivors', size=16)
+plt.legend(labels=["Didn't Survive", "Survived"])
+
+# Display the figure
+plt.show()
+```
+![image](https://raw.githubusercontent.com/brij0707/EDA-for-Titanic-Data-Set/main/images/Count%20VS%20Sex.jpg)
+
+### **Observations**:
+
+- We can observe that a **significant** number of **males**  **didn't survive** the accident (**468/577 males died**).
+
+- On contrary, the **female** **survival** rate is noticibly **higher** than the males (Only **81/314 females died**).
+## **Question**: What is the rate of survival among different classes of passengers?
+```python
+# Instantiate a figure of size of 7 x 7 inches
+f = plt.figure(figsize=(7, 7))
+
+# Plotting countplot of Pclass vs survived
+ax = sns.countplot(x='Pclass', hue='Survived', data=data, palette='rocket')
+
+# Adding percentages to the bars
+for p in ax.patches:
+    percentage = '{:.2f}%'.format(100 * p.get_height() / total)
+    x = p.get_x() + p.get_width() / 5
+    y = p.get_y() + p.get_height()
+    ax.annotate(percentage, (x, y))
+
+# Adding some cosmetics - ticks, labels, title, legend and grid.
+plt.xticks(ticks=[0, 1, 2], labels=["1st", "2nd", "3rd"], fontsize=12)
+plt.yticks(fontsize=12)
+plt.xlabel(xlabel="Pclass", size=14)
+plt.ylabel(ylabel='Count', size=14)
+plt.title(label='Comparison of survival of classes of passengers', size=16)
+plt.legend(labels=["Didn't Survive", "Survived"])
+plt.grid(b=True)
+
+# Display the figure
+plt.show()
+```
+
+![image](https://raw.githubusercontent.com/brij0707/EDA-for-Titanic-Data-Set/main/images/Count%20VS%20PClass.jpg)
+### **Observations**:
+
+- **Majority** of passengers are from **3rd** class.
+
+- A significant amount of **3rd** class passengers **did not survive** during the shipwreck.
+
+- This creates a concern that **3rd** class passengers were given **less** **priority** to the rescue than the rest of the passengers.
+
+- Passengers from the **1st** **class** have the **highest** **survival rate** than the **2nd class** than the **3rd class** passengers.
+
+## **Question**: What is the survival rate considering the Embarked variable?
+
+```python
+# Entering port names in a list - ports.
+ports = ["Southampton", "Cherbourg", "Queenstown"]
+
+# Instantiate a figure of size of 15 x 7 inches with 2 subplots.
+fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(15,7))
+
+# Plotting a countplot of embarked concerning survival in the first subplot.
+sns.countplot(x='Embarked', data=data, hue='Survived', palette='summer', ax=ax[0])
+
+# Adding percentages to the bars.
+for p in ax[0].patches:
+    percentage = '{:.2f}%'.format(100 * p.get_height() / total)
+    x = p.get_x() + p.get_width()/5
+    y = p.get_y() + p.get_height()
+    ax[0].annotate(percentage, (x, y))
+
+# Adding some cosmetics - ticks, labels, title, legend and grid to the countplot.
+ax[0].set_title(label='Frequency distribution of Survived vs Embarked', size=16)
+ax[0].set_ylabel(ylabel='Number of Passengers', size=14)
+ax[0].set_xlabel(xlabel='Port of Embarkment', size=14)
+ax[0].set_xticklabels(labels=ports, fontsize=12)
+ax[0].set_yticklabels(labels=np.arange(0,500,50), fontsize=12)
+ax[0].legend(labels=["Didnt Survive", 'Survived'])
+
+# CPlotting a pointplot of embarked concerning survival in the second subplot.
+sns.pointplot(x='Embarked', y='Survived', data=data, color='green', ax=ax[1])
+
+# Adding some cosmetics - ticks, labels, title, and grid to the pointplot.
+ax[1].set_title(label='Proportion of Survived concerning Embarked', size=16)
+ax[1].set_ylabel(ylabel='Survived', size=14)
+ax[1].set_xlabel(xlabel='Port of Embarkment', size=14)
+ax[1].set_xticklabels(labels=ports, fontsize=12)
+ax[1].set_yticklabels(labels=np.round(np.arange(0.25,0.7,0.05),2), fontsize=12)
+
+
+# Setting a super title for Surival vs Embarked
+plt.suptitle(t='Frequency and proportion distribution of Survived concerning Embarked', size=18)
+
+# Display the output
+plt.show()
+
+```
+![image](https://raw.githubusercontent.com/brij0707/EDA-for-Titanic-Data-Set/main/images/Count%20VS%20Embarked.jpg)
